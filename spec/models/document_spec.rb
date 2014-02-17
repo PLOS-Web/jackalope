@@ -6,9 +6,9 @@ describe "Document" do
 
   it "can retrieve an article by doi" do
     doi = "10.1371/journal.pone.0050000"
-    doc = Document.where(DOI: doi).first
+    doc = Document.where(doi: doi).first
     p doc
-    expect(doc[:DOI]).to eq(doi)
+    expect(doc[:doi]).to eq(doi)
   end
 
   it "can retrieve multiple articse by doi" do
@@ -16,7 +16,7 @@ describe "Document" do
     (50000..50010).each do |i|
       dois << "10.1371/journal.pone." + i.to_s.rjust(7, '0')
     end
-    docs = Document.where(:DOI => dois)
-    expect(docs.order(:DOI).map(&:DOI)).to eq(dois)
+    docs = Document.where(:doi => dois)
+    expect(docs.order(:doi).map(&:doi)).to eq(dois)
   end
 end
