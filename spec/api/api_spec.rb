@@ -47,12 +47,16 @@ describe Jackalope::API do
       expect(json_response[0]['authors'].count).to eq(3)
     end
 
-    xit 'can respond to a list of dois as a filter' do
+    it 'can respond to a list of dois as a filter' do
       dois = []
       (50000..50010).each do |i|
-        dois << "10.1371/journal.pone." + i.to_s.rjust(7, '0')
+        dois << CGI::escape("10.1371/journal.pone." + i.to_s.rjust(7, '0'))
       end
-      doi_query = "[%s]".dois.join(',')
+      doi_query = dois.join '&doi[]=' #looks like &doi[]=x&doi[]=y...
+
+      get "/v1/documents?doi[]=#{doi_query}"
+      json_response = JSON.parse last_response.body
+      expect(json_response.length).to eq(dois.length)
     end
   end
 end

@@ -1,3 +1,4 @@
+require 'pp'
 require 'grape'
 require_relative '../models/em'
 
@@ -11,7 +12,7 @@ module Jackalope
       desc "Documents"
 
       params do
-        optional :doi
+        optional :doi, type: Array
         optional :per_page, type: Integer, default: 50
         optional :page, type: Integer, default: 0
 
@@ -24,6 +25,9 @@ module Jackalope
         end
         @documents = docs_rel.limit(params['per_page']).offset(params['page']*(params['per_page'])).order(:actual_online_pub_date)
       end
+
     end
   end
 end
+
+#puts Jackalope::API::routes
