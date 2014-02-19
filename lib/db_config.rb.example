@@ -1,0 +1,14 @@
+require 'bundler'
+Bundler.require
+
+ActiveRecord::Base.pluralize_table_names = false
+ActiveRecord::ConnectionAdapters::SQLServerAdapter.lowercase_schema_reflection = true
+
+#  Fill this stuff in
+ActiveRecord::Base.establish_connection(
+    adapter: 'sqlserver',
+    host: '0.0.0.0',
+    database: 'PONE', #TODO add support for all DBs
+    username: 'user',
+    password: 'pass',
+)
