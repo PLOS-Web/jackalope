@@ -10,17 +10,13 @@ module Jackalope
     resource :documents do
       desc "Documents"
 
-      #params do
-      #  optional :dois, type: Array do
-      #    requires :doi, type: String
-      #  end
-      #end
       params do
         optional :doi
         optional :per_page, type: Integer, default: 50
         optional :page, type: Integer, default: 0
 
       end
+
       get '', jbuilder: 'document.jbuilder' do
         docs_rel = Document.where('DOI IS NOT NULL').where('ACTUAL_ONLINE_PUB_DATE IS NOT NULL')
         if params[:doi]

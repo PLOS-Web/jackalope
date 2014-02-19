@@ -1,4 +1,5 @@
 require 'cgi'
+require 'pp'
 require_relative '../spec_helper'
 
 describe Jackalope::API do
@@ -32,7 +33,19 @@ describe Jackalope::API do
 
       json_response = JSON.parse last_response.body
       expect(json_response.length).to eq(1)
-      expect(json_response[0]['document']['doi']).to eq(doi)
+      expect(json_response[0]['doi']).to eq(doi)
+      expect(json_response[0]['authors'].count).to eq(3)
+    end
+
+    it 'provides a list of authors' do
+      doi = '10.1371/journal.pone.0050000'
+      get "/v1/documents?doi=#{CGI::escape(doi)}"
+      expect(last_response.status).to eq(200)
+
+      json_response = JSON.parse last_response.body
+      expect(json_response.length).to eq(1)
+      expect(json_response[0]['doi']).to eq(doi)
+      expect(json_response[0]['authors'].count).to eq(3)
     end
   end
 end

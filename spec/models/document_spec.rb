@@ -20,4 +20,13 @@ describe "Document" do
     expect(docs.order(:doi).map(&:doi)).to eq(dois)
   end
 
+  it "has authors" do
+    doi = "10.1371/journal.pone.0050000"
+    doc = Document.where(doi: doi).first
+
+    authors = doc.authors.order(:rank).all
+    #p authors
+    authors[0].should respond_to(:lastname)
+  end
+
 end

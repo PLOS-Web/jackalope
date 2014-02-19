@@ -1,5 +1,4 @@
 json.array! @documents do |document|
-  json.document do
-    json.(document, :doi, :category, :actual_online_pub_date)
-  end
+  json.(document, :doi, :dtitle, :short_title, :category, :abstract_text, :actual_online_pub_date)
+  json.authors document.current_authors, :rank, :firstname, :lastname
 end
