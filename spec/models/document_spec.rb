@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../lib/models/em'
+require_relative '../../app/models/em'
 
 
 describe "Document" do
