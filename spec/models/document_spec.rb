@@ -5,7 +5,7 @@ require_relative '../../lib/models/em'
 describe "Document" do
 
   it "can retrieve an article by doi" do
-    doi = "10.1371/journal.pone.0050000"
+    doi = "10.1371/journal.pbio.1001788"
     doc = Document.where(doi: doi).first
     #p doc
     expect(doc[:doi]).to eq(doi)
@@ -13,15 +13,15 @@ describe "Document" do
 
   it "can retrieve multiple articles by doi" do
     dois = []
-    (50000..50010).each do |i|
-      dois << "10.1371/journal.pone." + i.to_s.rjust(7, '0')
+    (1001000..1001020).each do |i|
+      dois << "10.1371/journal.pbio." + i.to_s
     end
     docs = Document.where(:doi => dois)
     expect(docs.order(:doi).map(&:doi)).to eq(dois)
   end
 
   it "has authors" do
-    doi = "10.1371/journal.pone.0050000"
+    doi = "10.1371/journal.pbio.1001788"
     doc = Document.where(doi: doi).first
 
     authors = doc.authors.order(:rank).all

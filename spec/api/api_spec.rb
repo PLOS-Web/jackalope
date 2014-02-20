@@ -27,18 +27,17 @@ describe Jackalope::API do
     end
 
     it 'can find a document by doi' do
-      doi = '10.1371/journal.pone.0050000'
+      doi = '10.1371/journal.pbio.1001788'
       get "/v1/documents?doi=#{CGI::escape(doi)}"
       expect(last_response.status).to eq(200)
 
       json_response = JSON.parse last_response.body
       expect(json_response.length).to eq(1)
       expect(json_response[0]['doi']).to eq(doi)
-      expect(json_response[0]['authors'].count).to eq(3)
     end
 
     it 'provides a list of authors' do
-      doi = '10.1371/journal.pone.0050000'
+      doi = '10.1371/journal.pbio.1001788'
       get "/v1/documents?doi=#{CGI::escape(doi)}"
       expect(last_response.status).to eq(200)
 
@@ -49,8 +48,8 @@ describe Jackalope::API do
 
     it 'can respond to a list of dois as a filter' do
       dois = []
-      (50000..50010).each do |i|
-        dois << CGI::escape("10.1371/journal.pone." + i.to_s.rjust(7, '0'))
+      (1001000..1001020).each do |i|
+        dois << CGI::escape("10.1371/journal.pbio." + i.to_s)
       end
       doi_query = dois.join '&doi[]=' #looks like &doi[]=x&doi[]=y...
 
