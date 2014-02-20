@@ -1,3 +1,4 @@
+$LOAD_PATH << '.'
 require 'grape/jbuilder'
 require_relative 'controllers/api'
 
