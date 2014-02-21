@@ -10,16 +10,16 @@ describe Jackalope::API do
   end
 
   describe Jackalope::API do
-    describe 'GET /v1/documents'
+    describe 'GET /v1/journal/pbio/documents'
     it 'exists' do
-      get '/v1/documents'
+      get '/v1/journals/pbio/documents'
       expect(last_response.status).to eq(200)
     end
 
     it 'allows pagination' do
       per_page = 31
       page = 4
-      get "/v1/documents?per_page=#{per_page}&page=#{page}"
+      get "/v1/journals/pbio/documents?per_page=#{per_page}&page=#{page}"
       expect(last_response.status).to eq(200)
 
       json_response = JSON.parse last_response.body
@@ -28,7 +28,7 @@ describe Jackalope::API do
 
     it 'can find a document by doi' do
       doi = '10.1371/journal.pbio.1001788'
-      get "/v1/documents?doi=#{CGI::escape(doi)}"
+      get "/v1/journals/pbio/documents?doi=#{CGI::escape(doi)}"
       expect(last_response.status).to eq(200)
 
       json_response = JSON.parse last_response.body
@@ -38,7 +38,7 @@ describe Jackalope::API do
 
     it 'provides a list of authors' do
       doi = '10.1371/journal.pbio.1001788'
-      get "/v1/documents?doi=#{CGI::escape(doi)}"
+      get "/v1/journals/pbio/documents?doi=#{CGI::escape(doi)}"
       expect(last_response.status).to eq(200)
 
       json_response = JSON.parse last_response.body
@@ -53,7 +53,10 @@ describe Jackalope::API do
       end
       doi_query = dois.join '&doi[]=' #looks like &doi[]=x&doi[]=y...
 
-      get "/v1/documents?doi[]=#{doi_query}"
+      get "/v1/journals/pbio/documents?doi[]=#{doi_query}"
+
+      expect(last_response.status).to eq(200)
+
       json_response = JSON.parse last_response.body
       expect(json_response.length).to eq(dois.length)
     end
