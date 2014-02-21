@@ -8,6 +8,13 @@ class Document < ActiveRecord::Base
   alias_attribute :abstract, :abstract_text
   alias_attribute :published_at, :actual_online_pub_date
 
+  def self.default_scope
+    where('DOI IS NOT NULL').where('ACTUAL_ONLINE_PUB_DATE IS NOT NULL')
+  end
+
+  def self.paginated(per_page: 50, page: 0)
+    limit(per_page).offset(page*per_page)
+  end
 end
 
 class Author < ActiveRecord::Base

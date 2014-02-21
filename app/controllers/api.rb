@@ -20,11 +20,11 @@ module Jackalope
         end
 
         get 'documents', jbuilder: 'document.jbuilder' do
-          docs_rel = Document.where('DOI IS NOT NULL').where('ACTUAL_ONLINE_PUB_DATE IS NOT NULL')
+          docs_rel = Document
           if params[:doi]
             docs_rel = docs_rel.where(doi: params['doi'])
           end
-          @documents = docs_rel.limit(params['per_page']).offset(params['page']*(params['per_page'])).order(:actual_online_pub_date)
+          @documents = docs_rel.order(:actual_online_pub_date).paginated(per_page: params['per_page'], page: params['page'])
         end
       end
     end

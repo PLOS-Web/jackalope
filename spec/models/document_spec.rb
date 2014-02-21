@@ -29,4 +29,12 @@ describe "Document" do
     authors[0].should respond_to(:lastname)
   end
 
+  it "can paginate" do
+    docs = Document.paginated(per_page: 50, page: 0)
+    expect(docs.length).to eq(50)
+  end
+
+  it "can paginate and order" do
+    docs = Document.order('')
+  end
 end
