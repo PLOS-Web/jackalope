@@ -37,4 +37,28 @@ describe "Document" do
   it "can paginate and order" do
     docs = Document.order('')
   end
+
+  describe "after_published_at_by" do
+    it "grabs only articles that have been published between now and a specificed time ago" do
+      seconds = 14*(24*60*60)
+      docs = Document.after_published_at_by(seconds)
+      num_docs = docs.length
+      num_docs.should_not eq(0)
+
+      docs.where('actual_online_pub_date <= ?', Time.now).length.should eq(num_docs)
+      docs.where('actual_online_pub_date >= ?', Time.now - seconds).length.should eq(num_docs)
+    end
+  end
+
+  describe "before_published_at_by" do
+    it "grabs articles that will be published between now and a specified time from now" do
+      seconds = 14*(24*60*60)
+      docs = Document.before_published_at_by(seconds)
+      num_docs = docs.length
+      num_docs.should_not eq(0)
+
+      docs.where('actual_online_pub_date >= ?', Time.now).length.should eq(num_docs)
+      docs.where('actual_online_pub_date <= ?', Time.now + seconds).length.should eq(num_docs)
+    end
+  end
 end

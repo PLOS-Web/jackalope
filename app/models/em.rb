@@ -15,6 +15,14 @@ class Document < ActiveRecord::Base
   def self.paginated(per_page: 50, page: 0)
     limit(per_page).offset(page*per_page)
   end
+
+  def self.after_published_at_by(secs)
+    where actual_online_pub_date: (Time.now-secs..Time.now)
+  end
+
+  def self.before_published_at_by(secs)
+    where actual_online_pub_date: (Time.now..Time.now+secs)
+  end
 end
 
 class Author < ActiveRecord::Base

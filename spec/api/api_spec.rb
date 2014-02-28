@@ -60,5 +60,47 @@ describe Jackalope::API do
       json_response = JSON.parse last_response.body
       expect(json_response.length).to eq(dois.length)
     end
+
+    describe 'GET /v1/journal/pbio/pipeline' do
+      it 'exists' do
+        get '/v1/journals/pbio/pipeline'
+        expect(last_response.status).to eq(200)
+      end
+    end
+
+    describe 'GET /v1/journal/pbio/recent' do
+      it 'exists' do
+        get '/v1/journals/pbio/recent'
+        expect(last_response.status).to eq(200)
+      end
+
+      it "returns articles that have been published" do
+        get '/v1/journals/pbio/recent'
+        json_response = JSON.parse last_response.body
+        json_response.length.should_not eq(0)
+
+        pubdates = json_response.map {|doc| doc['published_at']}
+        pubdates.find_all { |pubdate| pubdate < Time.now}.length.should eq(json_response.length)
+
+      end
+    end
+
+    describe 'GET /v1/journal/pbio/pipeline' do
+      it 'exists' do
+        get '/v1/journals/pbio/pipeline'
+        expect(last_response.status).to eq(200)
+      end
+
+      it "returns articles that haven't been published yet" do
+        get '/v1/journals/pbio/pipeline'
+        json_response = JSON.parse last_response.body
+        article_count = json_response.length
+        article_count.should_not eq(0)
+
+        pubdates = json_response.map { |doc| doc['published_at'] }
+        pubdates.find_all { |pubdate| pubdate > Time.now}.length.should eq(article_count)
+
+      end
+    end
   end
 end
