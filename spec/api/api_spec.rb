@@ -61,6 +61,16 @@ describe Jackalope::API do
       expect(json_response.length).to eq(dois.length)
     end
 
+    it 'provides a blurb sometimes' do
+      blurb_doi = "10.1371/journal.pbio.1001133"
+      get "/v1/journals/pbio/documents?doi=#{blurb_doi}"
+      expect(last_response.status).to eq(200)
+      json_response = JSON.parse last_response.body
+      json_response.length.should eq(1)
+
+      json_response[0]['blurb'].length.should be > 10
+    end
+
     describe 'GET /v1/journal/pbio/pipeline' do
       it 'exists' do
         get '/v1/journals/pbio/pipeline'

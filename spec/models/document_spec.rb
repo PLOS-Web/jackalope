@@ -38,6 +38,11 @@ describe "Document" do
     docs = Document.order('')
   end
 
+  it "possibly has a blub" do
+    doc = Document.first
+    doc.should respond_to(:manuscript_details)
+  end
+
   describe "after_published_at_by" do
     it "grabs only articles that have been published between now and a specificed time ago" do
       seconds = 14*(24*60*60)
@@ -61,4 +66,6 @@ describe "Document" do
       docs.where('actual_online_pub_date <= ?', Time.now + seconds).length.should eq(num_docs)
     end
   end
+
+
 end

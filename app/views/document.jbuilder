@@ -4,6 +4,9 @@ json.array! @documents do |document|
     json.abstract document.abstract
   else
     json.abstract nil
-end
+  end
+  if document.blurb
+    json.blurb document.blurb
+  end
   json.authors document.authors.order(:rank, :lastname, :firstname), :rank, :firstname, :lastname
 end
